@@ -9,316 +9,343 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
+            background-color: #525659; /* Abu-abu gelap agar kontras dengan kertas */
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            -webkit-print-color-adjust: exact;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
+
+        /* Kelas Halaman A4 Fisik */
+        .sheet {
+            background-color: white;
+            width: 210mm;
+            height: 297mm; /* Tinggi pas A4 */
+            position: relative;
+            overflow: hidden; /* Mencegah konten keluar kertas */
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Layout Kolom Konsisten */
+        .layout-grid {
+            display: flex;
+            flex: 1;
+            height: 100%;
+        }
+        .col-left {
+            width: 68%;
+            padding: 40px 30px 40px 40px; /* Top Right Bottom Left */
+        }
+        .col-right {
+            width: 32%;
+            background-color: #f8fafc; /* Slate-50 */
+            border-left: 1px solid #e2e8f0;
+            padding: 40px 30px;
+        }
+
+        /* Pengaturan Cetak / Print */
         @media print {
             body {
                 background-color: white;
-            }
-            .no-print {
-                display: none;
-            }
-            .print-container {
-                box-shadow: none;
-                max-width: 100%;
                 margin: 0;
                 padding: 0;
             }
+            .sheet {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+                page-break-after: always; /* Paksa ganti halaman setelah setiap .sheet */
+            }
+            .no-print {
+                display: none !important;
+            }
+            /* Hilangkan margin bawaan browser */
+            @page {
+                size: A4;
+                margin: 0; 
+            }
+        }
+        
+        /* Timeline Fix */
+        .timeline-container {
+            position: relative;
+            border-left: 2px solid #cbd5e1; /* Garis abu */
+            margin-left: 10px;
+            padding-bottom: 10px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 30px; /* Jarak aman biar gak nabrak */
+            margin-bottom: 25px;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -9px; /* Posisi titik pas di tengah garis (garis 2px, dot 16px -> -7px minus border) */
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: white;
+            border: 4px solid #3b82f6;
         }
     </style>
 </head>
-<body class="text-gray-800 antialiased py-8">
+<body>
 
-    <!-- Main Container -->
-    <div class="print-container max-w-4xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
-        
-        <!-- Header / Hero Section -->
-        <div class="bg-slate-900 text-white p-8 md:p-12 relative overflow-hidden">
-            <div class="absolute top-0 right-0 opacity-10 transform translate-x-10 -translate-y-10">
-                <i class="fa-solid fa-chess-king text-9xl"></i>
-            </div>
-            
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
-                <!-- Profile Image -->
-                <div class="w-32 h-32 md:w-40 md:h-40 shrink-0 border-4 border-white rounded-full overflow-hidden shadow-lg bg-white">
-                    <img src="https://imgix3.ruangguru.com/assets/miscellaneous/png_dotipf_6968.png" 
-                         alt="Dhanardi Riansyah" 
-                         class="w-full h-full object-cover">
-                </div>
-                
-                <!-- Name & Title -->
-                <div class="text-center md:text-left flex-1">
-                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-2">Dhanardi Riansyah</h1>
-                    <p class="text-xl text-blue-300 font-medium mb-4">Associate Academic Manager, Ruangguru</p>
-                    
-                    <!-- Contact Info -->
-                    <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-slate-300">
-                        <a href="https://linkedin.com/in/dhanardi-riansyah-17ba67a0" target="_blank" class="hover:text-white transition flex items-center gap-2">
-                            <i class="fa-brands fa-linkedin"></i> linkedin.com/in/dhanardi
-                        </a>
-                        <span class="flex items-center gap-2">
-                            <i class="fa-solid fa-envelope"></i> riansyahdhanardi@gmail.com
-                        </span>
-                        <span class="flex items-center gap-2">
-                            <i class="fa-solid fa-location-dot"></i> Jakarta, Indonesia
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Two Column Layout -->
-        <div class="flex flex-col md:flex-row">
-            
-            <!-- Left Column (Main Content) -->
-            <div class="w-full md:w-2/3 p-8 md:p-12">
-                
-                <!-- Professional Summary -->
-                <section class="mb-8">
-                    <h2 class="text-lg font-bold uppercase tracking-wider text-slate-700 border-b-2 border-blue-500 pb-2 mb-4">
-                        Tentang Saya
-                    </h2>
-                    <p class="text-gray-600 leading-relaxed">
-                        Seorang profesional di bidang pendidikan matematika dengan pengalaman luas dalam pengembangan kurikulum, strategi akademik, dan inovasi pembelajaran (EdTech). Saat ini aktif sebagai Associate Academic Manager di Ruangguru dan dikenal publik sebagai Game Master dalam ajang kompetisi kecerdasan "Clash of Champions".
-                    </p>
-                </section>
-
-                <!-- Experience -->
-                <section class="mb-8">
-                    <h2 class="text-lg font-bold uppercase tracking-wider text-slate-700 border-b-2 border-blue-500 pb-2 mb-6">
-                        Pengalaman Kerja
-                    </h2>
-
-                    <!-- Experience Block 1: Ruangguru (Current) -->
-                    <div class="mb-8">
-                        <h3 class="font-bold text-xl text-slate-900 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-building text-blue-500 text-sm"></i> Ruangguru
-                        </h3>
-                        
-                        <!-- Timeline Container -->
-                        <div class="relative border-l-2 border-slate-200 ml-3 space-y-8 pb-2">
-                            
-                            <!-- Role 1 -->
-                            <div class="relative pl-8">
-                                <!-- Dot -->
-                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-blue-500"></div>
-                                <!-- Content -->
-                                <h4 class="font-bold text-gray-800 text-lg leading-tight">Associate Academic Manager</h4>
-                                <p class="text-sm text-gray-500 mb-2 mt-1">May 2023 - Present · 2 yrs 7 mos · Jakarta, Indonesia · Hybrid</p>
-                            </div>
-
-                            <!-- Role 2 -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-blue-500"></div>
-                                <h4 class="font-bold text-gray-800 text-lg leading-tight">Senior Subject Specialist</h4>
-                                <p class="text-sm text-gray-500 mb-2 mt-1">Oct 2022 - Jun 2023 · 9 mos · South Jakarta, Jakarta, Indonesia</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Experience Block 2: Brain Academy -->
-                    <div class="mb-8">
-                        <h3 class="font-bold text-xl text-slate-900 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-building text-blue-500 text-sm"></i> Brain Academy by Ruangguru
-                        </h3>
-                        
-                        <div class="relative border-l-2 border-slate-200 ml-3 space-y-8 pb-2">
-                            <!-- Role 1 -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-blue-500"></div>
-                                <h4 class="font-bold text-gray-800 text-lg leading-tight">Senior Subject Specialist</h4>
-                                <p class="text-sm text-gray-500 mb-2 mt-1">Apr 2022 - Oct 2022 · 7 mos · South Jakarta, Jakarta, Indonesia</p>
-                            </div>
-
-                            <!-- Role 2 -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-blue-500"></div>
-                                <h4 class="font-bold text-gray-800 text-lg leading-tight">Subject Lead of Mathematics</h4>
-                                <p class="text-sm text-gray-500 mb-2 mt-1">Jan 2020 - Apr 2022 · 2 yrs 4 mos</p>
-                            </div>
-
-                            <!-- Role 3 -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-blue-500"></div>
-                                <h4 class="font-bold text-gray-800 text-lg leading-tight">MT Analyst</h4>
-                                <p class="text-sm text-gray-500 mb-2 mt-1">Sep 2020 - Sep 2021 · 1 yr 1 mo</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Experience Block 3: Guru Privat -->
-                    <div class="mb-8 pl-1">
-                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
-                            <h3 class="font-bold text-lg text-slate-900">Guru Privat Matematika, SD - SMA</h3>
-                            <span class="text-xs font-semibold px-2 py-0.5 bg-gray-100 rounded text-gray-600">Freelance</span>
-                        </div>
-                        <p class="text-xs text-gray-500 mb-2">Jan 2010 - Sep 2021 · 11 yrs 9 mos</p>
-                        <ol class="list-decimal list-outside ml-4 text-gray-600 space-y-1 text-sm pl-2">
-                            <li>Mengajar privat Matematika level SD - SMA</li>
-                            <li>Memberikan soal - soal ujian untuk latihan para murid</li>
-                        </ol>
-                    </div>
-
-                    <!-- Experience Block 4: Ruangguru (Previous) -->
-                    <div class="mb-8">
-                        <h3 class="font-bold text-xl text-slate-900 mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-building text-blue-500 text-sm"></i> Ruangguru
-                        </h3>
-                        
-                        <div class="relative border-l-2 border-slate-200 ml-3 space-y-8 pb-2">
-                            <!-- Role 1 -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-blue-500"></div>
-                                <h4 class="font-bold text-gray-800 text-lg leading-tight">Lead of mathematics master teacher pedagogy</h4>
-                                <p class="text-sm text-gray-500 mb-2 mt-1">Sep 2019 - Jan 2020 · 5 mos · Jakarta Metropolitan Area</p>
-                            </div>
-
-                            <!-- Role 2 -->
-                            <div class="relative pl-8">
-                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-blue-500"></div>
-                                <h4 class="font-bold text-gray-800 text-lg leading-tight">Mathematics master teacher</h4>
-                                <p class="text-sm text-gray-500 mb-2 mt-1">May 2017 - Sep 2019 · 2 yrs 5 mos · Greater Jakarta Area, Indonesia</p>
-                                <p class="text-sm text-gray-600 mb-2 italic">Sebagai Master Teacher Matematika di ruangguru.com saya memiliki beberapa tugas dan kewajiban :</p>
-                                <ol class="list-decimal list-outside ml-4 text-gray-600 space-y-1 text-sm pl-2">
-                                    <li>Membuat script video pada tiap video Matematika sehingga materi pada setiap video lebih terstruktur</li>
-                                    <li>Syuting video Matematika untuk level SMP dan SMA</li>
-                                    <li>Berkoordinasi dengan tim Content Production (Video Editor, Graphic Designer dan Animator) agar menghasilkan video dengan kualitas yang baik</li>
-                                    <li>Membuat soal - soal Matematika untuk kebutuhan Ruangbelajar</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                     <!-- Experience Block 5: BKB Nurul Fikri -->
-                     <div class="mb-6 pl-1">
-                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
-                            <h3 class="font-bold text-lg text-slate-900">Guru matematika dan asisten pengembang</h3>
-                            <span class="text-xs font-semibold px-2 py-0.5 bg-gray-100 rounded text-gray-600">BKB Nurul Fikri</span>
-                        </div>
-                        <p class="text-xs text-gray-500 mb-2">Feb 2013 - May 2017 · 4 yrs 4 mos · Greater Jakarta Area, Indonesia</p>
-                        <p class="text-sm text-gray-600 mb-2 italic">Di BKB Nurul Fikri saya memiliki tugas dan kewajiban :</p>
-                        <ol class="list-decimal list-outside ml-4 text-gray-600 space-y-1 text-sm pl-2">
-                            <li>Mengajar matematika</li>
-                            <li>Membuat soal - soal dan membuat pembahasan soal level SD - SMA</li>
-                        </ol>
-                    </div>
-
-                </section>
-
-                <!-- Education -->
-                <section>
-                    <h2 class="text-lg font-bold uppercase tracking-wider text-slate-700 border-b-2 border-blue-500 pb-2 mb-6">
-                        Pendidikan
-                    </h2>
-                    <div class="flex items-start gap-4">
-                        <div class="mt-1 text-blue-500">
-                            <i class="fa-solid fa-graduation-cap text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-slate-900">Universitas Indonesia</h3>
-                            <p class="text-gray-600">Sarjana Sains (S.Si)</p>
-                            <p class="text-sm text-gray-400">2007 - 2011</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Right Column (Sidebar) -->
-            <div class="w-full md:w-1/3 bg-slate-50 p-8 md:p-12 border-t md:border-t-0 md:border-l border-slate-200">
-                
-                <!-- Skills -->
-                <section class="mb-10">
-                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
-                        Keahlian Utama
-                    </h2>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-white border border-slate-200 rounded text-sm text-slate-700 font-medium shadow-sm">Mathematics Education</span>
-                        <span class="px-3 py-1 bg-white border border-slate-200 rounded text-sm text-slate-700 font-medium shadow-sm">Curriculum Development</span>
-                        <span class="px-3 py-1 bg-white border border-slate-200 rounded text-sm text-slate-700 font-medium shadow-sm">Public Speaking</span>
-                        <span class="px-3 py-1 bg-white border border-slate-200 rounded text-sm text-slate-700 font-medium shadow-sm">Game Design (Educational)</span>
-                        <span class="px-3 py-1 bg-white border border-slate-200 rounded text-sm text-slate-700 font-medium shadow-sm">Team Leadership</span>
-                        <span class="px-3 py-1 bg-white border border-slate-200 rounded text-sm text-slate-700 font-medium shadow-sm">Singapore Math</span>
-                    </div>
-                </section>
-
-                <!-- Tools -->
-                <section class="mb-10">
-                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
-                        Tools & Teknologi
-                    </h2>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li class="flex items-center gap-2">
-                            <i class="fa-solid fa-check text-green-500 text-xs"></i> GeoGebra
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-solid fa-check text-green-500 text-xs"></i> Microsoft Office Suite
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-solid fa-check text-green-500 text-xs"></i> Zoom / Webinar Tools
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-solid fa-check text-green-500 text-xs"></i> Learning Management Systems
-                        </li>
-                    </ul>
-                </section>
-
-                <!-- Languages -->
-                <section class="mb-10">
-                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
-                        Bahasa
-                    </h2>
-                    <div class="space-y-3">
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="font-medium text-slate-700">Indonesia</span>
-                                <span class="text-slate-400">Native</span>
-                            </div>
-                            <div class="w-full bg-slate-200 rounded-full h-1.5">
-                                <div class="bg-blue-500 h-1.5 rounded-full" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="font-medium text-slate-700">Inggris</span>
-                                <span class="text-slate-400">Professional</span>
-                            </div>
-                            <div class="w-full bg-slate-200 rounded-full h-1.5">
-                                <div class="bg-blue-500 h-1.5 rounded-full" style="width: 85%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Highlights -->
-                <section>
-                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
-                        Publikasi & Speaker
-                    </h2>
-                    <div class="text-sm text-gray-600 space-y-4">
-                        <div>
-                            <strong class="block text-slate-800">NGUPAS Vol. 27</strong>
-                            <p class="text-xs mb-1">Narasumber</p>
-                            <p>"Strategi Efektif Pembelajaran Matematika" bersama IMES.</p>
-                        </div>
-                    </div>
-                </section>
-
-            </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="bg-slate-50 p-6 text-center text-xs text-gray-400 border-t border-slate-200">
-            &copy; 2025 Dhanardi Riansyah.
-        </div>
-    </div>
-
-    <!-- Floating Print Button (Visible on Screen Only) -->
-    <div class="fixed bottom-8 right-8 no-print">
-        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+    <!-- Tombol Print -->
+    <div class="no-print fixed bottom-8 right-8 z-50">
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg flex items-center gap-2 transition hover:scale-105">
             <i class="fa-solid fa-print"></i> Cetak PDF
         </button>
+    </div>
+
+    <!-- ================= HALAMAN 1 ================= -->
+    <div class="sheet">
+        
+        <!-- Header (Hanya di Halaman 1) -->
+        <header class="bg-slate-900 text-white p-10 relative shrink-0">
+            <div class="absolute top-0 right-0 opacity-10">
+                <i class="fa-solid fa-chess-king text-[150px] -mr-4 -mt-4"></i>
+            </div>
+            
+            <div class="flex items-center gap-8 relative z-10">
+                <div class="w-32 h-32 shrink-0 border-4 border-white rounded-full overflow-hidden bg-white">
+                    <img src="https://imgix3.ruangguru.com/assets/miscellaneous/png_dotipf_6968.png" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-3xl font-bold mb-1">Dhanardi Riansyah</h1>
+                    <p class="text-lg text-blue-300 font-medium mb-3">Associate Academic Manager & Game Master</p>
+                    <div class="flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-300">
+                        <span class="flex items-center gap-2"><i class="fa-brands fa-linkedin"></i> linkedin.com/in/dhanardi</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-envelope"></i> riansyahdhanardi@gmail.com</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> Jakarta, Indonesia</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="layout-grid">
+            <!-- Kolom Kiri Halaman 1 -->
+            <div class="col-left">
+                <!-- Summary -->
+                <div class="mb-8">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 border-b-2 border-blue-500 pb-2 mb-3">Tentang Saya</h2>
+                    <p class="text-xs text-gray-600 leading-relaxed text-justify">
+                        Seorang profesional di bidang pendidikan matematika dengan pengalaman luas dalam pengembangan kurikulum, strategi akademik, dan inovasi pembelajaran (EdTech). Saat ini aktif sebagai Associate Academic Manager di Ruangguru dan dikenal publik sebagai Game Master dalam ajang kompetisi kecerdasan "Clash of Champions".
+                    </p>
+                </div>
+
+                <!-- Experience Part 1 -->
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 border-b-2 border-blue-500 pb-2 mb-5">Pengalaman Kerja</h2>
+
+                <!-- Exp: Ruangguru Current -->
+                <div class="mb-6">
+                    <h3 class="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-building text-blue-600 text-xs"></i> Ruangguru
+                    </h3>
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-sm text-gray-800">Associate Academic Manager</h4>
+                            <p class="text-[10px] text-gray-500">May 2023 - Present · 2 yrs 7 mos</p>
+                        </div>
+                        <div class="timeline-item !mb-0">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-sm text-gray-800">Senior Subject Specialist</h4>
+                            <p class="text-[10px] text-gray-500">Oct 2022 - Jun 2023 · 9 mos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exp: Brain Academy -->
+                <div class="mb-0">
+                    <h3 class="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-building text-blue-600 text-xs"></i> Brain Academy by Ruangguru
+                    </h3>
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-sm text-gray-800">Senior Subject Specialist</h4>
+                            <p class="text-[10px] text-gray-500">Apr 2022 - Oct 2022 · 7 mos</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-sm text-gray-800">Subject Lead of Mathematics</h4>
+                            <p class="text-[10px] text-gray-500">Jan 2020 - Apr 2022 · 2 yrs 4 mos</p>
+                        </div>
+                        <div class="timeline-item !mb-0">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-sm text-gray-800">MT Analyst</h4>
+                            <p class="text-[10px] text-gray-500">Sep 2020 - Sep 2021 · 1 yr 1 mo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom Kanan Halaman 1 -->
+            <div class="col-right">
+                <!-- Skills -->
+                <div class="mb-8">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 border-b border-slate-200 pb-1">Keahlian Utama</h2>
+                    <div class="flex flex-col gap-2">
+                        <span class="text-xs font-medium text-slate-700 p-2 bg-white rounded border border-slate-200 border-l-4 border-l-blue-400">Mathematics Education</span>
+                        <span class="text-xs font-medium text-slate-700 p-2 bg-white rounded border border-slate-200 border-l-4 border-l-blue-400">Curriculum Development</span>
+                        <span class="text-xs font-medium text-slate-700 p-2 bg-white rounded border border-slate-200 border-l-4 border-l-blue-400">Public Speaking</span>
+                        <span class="text-xs font-medium text-slate-700 p-2 bg-white rounded border border-slate-200 border-l-4 border-l-indigo-400">Game Design (Edu)</span>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div>
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 border-b border-slate-200 pb-1">Tools</h2>
+                    <ul class="space-y-2 text-xs text-gray-700">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-calculator text-green-600 w-4"></i> GeoGebra</li>
+                        <li class="flex items-center gap-2"><i class="fa-brands fa-microsoft text-blue-600 w-4"></i> Office Suite</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-video text-purple-600 w-4"></i> Zoom / Webinar</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-laptop-code text-orange-600 w-4"></i> LMS Systems</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Penanda Halaman -->
+        <div class="absolute bottom-4 right-6 text-[10px] text-gray-400">Halaman 1 dari 2</div>
+    </div>
+
+
+    <!-- ================= HALAMAN 2 ================= -->
+    <div class="sheet">
+        <!-- Spacer Header agar tinggi kolom konsisten (Opsional, tapi bagus buat estetika) -->
+        <div class="h-2 bg-slate-900 w-full shrink-0"></div>
+
+        <div class="layout-grid">
+            <!-- Kolom Kiri Halaman 2 -->
+            <div class="col-left pt-10">
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 border-b border-dashed border-slate-300 pb-2 mb-6">Lanjutan Pengalaman Kerja</h2>
+
+                <!-- Exp: Guru Privat -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <h3 class="font-bold text-base text-slate-900">Guru Privat Matematika</h3>
+                        <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-600 border border-gray-200">Freelance</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mb-2">Jan 2010 - Sep 2021 · 11 yrs 9 mos</p>
+                    <ul class="list-disc ml-4 text-xs text-gray-600 space-y-1">
+                        <li>Mengajar privat Matematika level SD - SMA.</li>
+                        <li>Memberikan soal-soal ujian untuk latihan para murid.</li>
+                    </ul>
+                </div>
+
+                <!-- Exp: Ruangguru Lama -->
+                <div class="mb-6">
+                    <h3 class="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-building text-blue-600 text-xs"></i> Ruangguru
+                    </h3>
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-sm text-gray-800">Lead of Math Master Teacher Pedagogy</h4>
+                            <p class="text-[10px] text-gray-500">Sep 2019 - Jan 2020 · 5 mos</p>
+                        </div>
+                        <div class="timeline-item !mb-0">
+                            <div class="timeline-dot"></div>
+                            <h4 class="font-bold text-sm text-gray-800">Mathematics Master Teacher</h4>
+                            <p class="text-[10px] text-gray-500 mb-2">May 2017 - Sep 2019 · 2 yrs 5 mos</p>
+                            <p class="text-[11px] text-gray-600 italic mb-1">Tugas Utama:</p>
+                            <ul class="list-disc ml-4 text-[11px] text-gray-600 space-y-1">
+                                <li>Membuat script video matematika terstruktur.</li>
+                                <li>Syuting video materi SMP & SMA.</li>
+                                <li>Koordinasi tim produksi (Editor, Animator).</li>
+                                <li>Pembuatan bank soal Ruangbelajar.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exp: Nurul Fikri -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-baseline mb-1">
+                        <h3 class="font-bold text-base text-slate-900">Guru Matematika & Pengembang</h3>
+                        <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-600 border border-gray-200">Nurul Fikri</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mb-2">Feb 2013 - May 2017 · 4 yrs 4 mos</p>
+                    <ul class="list-disc ml-4 text-xs text-gray-600 space-y-1">
+                        <li>Mengajar matematika kelas reguler.</li>
+                        <li>Pengembangan soal & pembahasan SD - SMA.</li>
+                    </ul>
+                </div>
+
+                <!-- Education -->
+                <div class="pt-4 border-t border-slate-200">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-800 mb-4">Pendidikan</h2>
+                    <div class="flex items-start gap-3">
+                        <div class="bg-blue-50 p-2 rounded text-blue-600"><i class="fa-solid fa-graduation-cap text-lg"></i></div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm">Universitas Indonesia</h3>
+                            <p class="text-xs text-gray-700">Sarjana Sains (S.Si)</p>
+                            <p class="text-[10px] text-gray-500">2007 - 2011</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom Kanan Halaman 2 -->
+            <div class="col-right pt-10">
+                <!-- Lanjutan Skills / Bahasa -->
+                 <div class="mb-8">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 border-b border-slate-200 pb-1">Bahasa</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-[10px] mb-1">
+                                <span class="font-semibold text-slate-700">Indonesia</span>
+                                <span class="text-slate-400">Native</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-1">
+                                <div class="bg-slate-700 h-1 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[10px] mb-1">
+                                <span class="font-semibold text-slate-700">Inggris</span>
+                                <span class="text-slate-400">Pro</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-1">
+                                <div class="bg-slate-700 h-1 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Publikasi -->
+                <div class="mb-8">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 border-b border-slate-200 pb-1">Publikasi</h2>
+                    <div class="bg-white border border-slate-200 p-3 rounded shadow-sm">
+                        <strong class="block text-slate-800 text-xs mb-1">NGUPAS Vol. 27</strong>
+                        <div class="mb-2"><span class="text-[9px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Narasumber</span></div>
+                        <p class="text-[10px] text-gray-600 leading-tight">"Strategi Efektif Pembelajaran Matematika" - Webinar Nasional bersama IMES.</p>
+                    </div>
+                </div>
+                
+                <!-- Additional Info -->
+                 <div>
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3 border-b border-slate-200 pb-1">Keahlian Lain</h2>
+                    <div class="flex flex-col gap-2">
+                        <span class="text-xs font-medium text-slate-700 p-2 bg-white rounded border border-slate-200 border-l-4 border-l-green-400">Team Leadership</span>
+                         <span class="text-xs font-medium text-slate-700 p-2 bg-white rounded border border-slate-200 border-l-4 border-l-green-400">Singapore Math</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer Page 2 -->
+        <div class="absolute bottom-4 right-6 text-[10px] text-gray-400">Halaman 2 dari 2 · &copy; 2025 Dhanardi Riansyah</div>
     </div>
 
 </body>
